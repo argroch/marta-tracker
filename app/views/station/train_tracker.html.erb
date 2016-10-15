@@ -1,0 +1,33 @@
+<h1>When Will the Train Be Here?</h1>
+
+<% if !@my_station.nil? %>
+	<h3>You're at <%= @my_station.titleize %></h3>
+	<div class="row">
+		<% @coming_trains.each do |train| %>
+			<div class="col-md-4">
+				<div class="well">
+					<p>The <%= "#{train["LINE"]} Line #{train["DIRECTION"]}" %> Train</p>
+					<p>...arrives in <%= ((Time.now - Time.parse(train["NEXT_ARR"])).abs/60).round(2) %> minutes</p>
+				</div>
+			</div>
+		<% end %>
+	</div>
+<% end %>
+
+<div class="center-it">
+	<h2>Choose a Station</h2>
+</div>
+
+<div class="row">
+	<% @stations.sort.each_with_index do |station, index| %>
+		<% if index < @stations.length - 2 %>
+			<div class="col-md-4 center-it mbot-20">
+		<% elsif index == @stations.length - 2 %>
+			<div class="col-md-4 col-md-offset-1 center-it mbot-20">
+		<% else %>
+			<div class="col-md-4 col-md-offset-2 center-it mbot-20">
+		<% end %>
+				<%= link_to station.titleize, train_tracker_path(station: station), class: "btn btn-primary" %>
+			</div>
+	<% end %>
+</div>
